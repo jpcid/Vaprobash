@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-echo ">>> Installing Laravel"
+echo ">>> Installing Cartalyst Platform"
 
 [[ -z "$1" ]] && { echo "!!! IP address not set. Check the Vagrant file."; exit 1; }
 
 if [ -z "$2" ]; then
-    cartalyst_platform_root_folder="/vagrant/laravel"
+    cartalyst_platform_root_folder="/vagrant/platform"
 else
     cartalyst_platform_root_folder="$2"
 fi
@@ -36,12 +36,12 @@ if [ ! -d $cartalyst_platform_root_folder ]; then
 fi
 
 if [ ! -f "$cartalyst_platform_root_folder/composer.json" ]; then
-    # Create Laravel
-    if [ $HHVM_IS_INSTALLED -eq 0 ]; then
-        hhvm /usr/local/bin/composer create-project --prefer-dist laravel/laravel $cartalyst_platform_root_folder
-    else 
-        composer create-project --prefer-dist laravel/laravel $cartalyst_platform_root_folder
-    fi
+    # Create Cartalyst Platform
+
+    git clone https://github.com/cartalyst/platform.git $cartalyst_platform_root_folder
+    sudo chown -R vagrant:vagrant $cartalyst_platform_root_folder
+    composer install
+
 else
     # Go to vagrant folder
     cd $cartalyst_platform_root_folder
